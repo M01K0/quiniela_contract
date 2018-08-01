@@ -3,30 +3,43 @@ pragma solidity ^0.4.24;
 
 contract quiniela{
     
+    // SRUCTS.
+
     struct user{
         bool used;
-        uint place1;
-        uint place2;
-        uint place3;
-        string name;
-        uint256 date;
+        uint place1; // Id of team 1.
+        uint place2; // Id of team 2.
+        uint place3; // Id of team 3.
+        string name; // Name of the participant.
+        uint256 date; // Timestamp.
         bool voted;
         
     }
     
-    address [] public winners;
+    // TYPES.
+
+    address [] public winners; // Array of winners.
     bool public toVote;
     uint public votes;
     
-    address [] public players;
-    mapping (uint => string) public teams;
-    address public constant admin= 0x03C7Ae1f93efC950A55f6893624D639F02b0EF7c;
+    address [] public players; // Array of participants.
+    mapping (uint => string) public teams; // Id of each team.
+    address public constant admin= 0x17d98914dBf1035d808ba2BCa60652F8822b42D4; //Admin of the contract.
     mapping (address => user) public users;
-    
     uint public constant cost= .2 ether;
+
+    // MODIFIERS
+
+    // Check if the sender is the admin of the contract.
+    modifier onlyAdmin() {
+        require(msg.sender == admin);
+        _;
+    }
     
-    
-    constructor() public{
+    /**
+    * @dev This function is executed at initialization and sets the team of the football pool.
+    */
+    constructor() public {
         teams[1]= "Germany";
         teams[2]= "Argentina";
         teams[3]= "Australia";
@@ -60,16 +73,19 @@ contract quiniela{
         teams[31]= "Tunisia";
         teams[32]= "Uruguay";
     }
-    
-    modifier onlyAdmin() {
-        
-        require(msg.sender == admin);
-        _;
-    }
 
-    
-    function addUser(uint _place1, uint _place2, uint _place3, string _name, string _password)public  payable{
-        require(test(_password)); //#crypto_Polla2018
+    // PUBLIC METHODSS
+
+    /**
+    * @dev Function...
+    * @param _place1 -
+    * @param _place1 -
+    * @param _place1 -
+    * @param _name - 
+    * @param _password -
+    */
+    function addUser(uint _place1, uint _place2, uint _place3, string _name, string _password)public  payable {
+        require(test(_password)); // #crypto_Polla2018
         require(!users[msg.sender].used);
         users[msg.sender].place1=_place1;
         users[msg.sender].place2=_place2;
@@ -81,17 +97,18 @@ contract quiniela{
         players.push(msg.sender);
     }
     
-    function test(string _cad) private pure returns(bool){
-        return keccak256(_cad) == 0x2a56a8951ea80f8d88e626b0e9632a3c2fe7c1f6f450a8838e03734380d1c049;
-    }
-    
+    /**
+    * @dev Function...
+    */
     function setWinners(address [] _winners) public onlyAdmin(){
        winners= _winners;
        toVote= true;
-     
     }
     
-    function vote(bool _vote) public returns (bool){
+    /**
+    * @dev Function..
+    */
+    function vote(bool _vote) public returns (bool) {
         require(toVote);
         require(users[msg.sender].voted == false);
         users[msg.sender].voted=true;
@@ -102,30 +119,51 @@ contract quiniela{
                 payMoney();
             }
         }
-        
-        
         return true;
     }
     
-    function payMoney() private{
+    /**
+    * @dev Function...
+    */
+    function payMoney() private {
         uint toPay= address(this).balance/(winners.length);
         
-        for(uint x= 0;x<winners.length-1;x++){
+        for(uint x = 0; x < winners.length - 1 ; x++ ){
             winners[x].transfer(toPay);
         }
         winners[(winners.length)-1].transfer(address(this).balance);
     }
     
+    /**
+    * @dev Function...
+    */
     function playersLength() public constant returns(uint){
         return players.length;
     }
     
-     /* Function to recover the funds on the contract */
+    /**
+    * @dev Function to recover the funds on the contract.
+    */
     function kill() public onlyAdmin() {
         selfdestruct(admin);
     }
-    
-    
+
+    /**
+    * @dev Function to get the winners array.
+    */
+    function getWinners () public constant returns( address []) {
+        return winners;
+    }
+
+    // PRIVATE METHODS
+
+    /**
+    * @dev Function to compare the password.
+    * @return Bool - Valid password.
+    */
+    function test(string _cad) private pure returns(bool){
+        return keccak256(_cad) == 0x2a56a8951ea80f8d88e626b0e9632a3c2fe7c1f6f450a8838e03734380d1c049;
+    }
     
     
 }
