@@ -5,27 +5,27 @@ contract quiniela{
     
     // SRUCTS.
 
-    struct user{ // Struct of the player.
-        bool used; // If this addres is used.
-        uint place1; // Id of team 1.
-        uint place2; // Id of team 2.
-        uint place3; // Id of team 3.
-        string name; // Name of the participant.
-        uint256 date; // Timestamp.
-        bool voted;
+    struct user{        // Struct of the player.
+        bool    used;   // If this addres is used.
+        uint    place1; // Id of team 1.
+        uint    place2; // Id of team 2.
+        uint    place3; // Id of team 3.
+        string  name;   // Name of the participant.
+        uint256 date;   // Timestamp.
+        bool    voted;
         
     }
     
     // TYPES.
 
-    address [] public winners; // Array of winners.
+    address [] public winners;              // Array of winners.
     bool public toVote; 
-    uint public votes; // Count of number of votes.
-    address [] public players; // Array of participants.
-    mapping (uint => string) public teams; // Id of each team.
-    address public constant admin = 0x17d98914dBf1035d808ba2BCa60652F8822b42D4; //Admin of the contract. accounts[9] of truffle.
+    uint public votes;                      // Count of number of votes.
+    address [] public players;              // Array of participants.
+    mapping (uint => string) public teams;  // Id of each team.
+    address public constant admin = 0x627306090abab3a6e1400e9345bc60c78a8bef57; //Admin of the contract. accounts[9] of truffle.
     mapping (address => user) public users;
-    uint public constant cost = 0.2 ether; // Cost tu enter in the football pool.
+    uint public constant cost = 0.2 ether;  // Cost tu enter in the football pool.
 
     // MODIFIERS.
 
@@ -78,7 +78,7 @@ contract quiniela{
     // PUBLIC METHODSS
 
     /**
-    * @dev Function...
+    * @dev Function to add an user, the user need the password.
     * @param _place1 - Uint - To set the place 1.
     * @param _place1 - Uint - To set the place 2.
     * @param _place1 - Uint - To set the place 3.
@@ -92,10 +92,10 @@ contract quiniela{
         users[msg.sender].place1 = _place1; // Set _place1.
         users[msg.sender].place2 = _place2; // Set _place2.
         users[msg.sender].place3 = _place3; // Set _place3.
-        users[msg.sender].name = _name; // Set name.
-        users[msg.sender].date = now; // Set timestamp.
+        users[msg.sender].name = _name;     // Set name.
+        users[msg.sender].date = now;       // Set timestamp.
         users[msg.sender].used = true; 
-        players.push(msg.sender); // Push to the array.
+        players.push(msg.sender);           // Push to the array.
     }
     
     /**
@@ -110,13 +110,13 @@ contract quiniela{
     * @dev Function to vote. Pay the money if more than 50% of the particiants are agree.
     */
     function vote ( bool _vote ) public returns ( bool ) {
-        require( toVote ); // The participant can vote.
+        require( toVote );                           // The participant can vote.
         require( users[msg.sender].voted == false ); // The participant vote.
         users[msg.sender].voted = true;
         if( _vote ) {
-            votes += 1; // Increment in 1 the votes.
-            if( votes > ( playersLength() / 2 ) ) { //
-                payMoney(); // Function.
+            votes += 1;                              // Increment in 1 the votes.
+            if( votes > ( playersLength() / 2 ) ) {
+                payMoney();                          // Call 'payMoney ' function.
             }
         }
         return true;
@@ -126,10 +126,10 @@ contract quiniela{
     * @dev Function to pay the money to each winner.
     */
     function payMoney () private {
-        uint toPay= address( this ).balance / winnersLength(); // Ether assigned for each winner.
+        uint toPay= address( this ).balance / winnersLength();              // Ether assigned for each winner.
 
         for( uint x = 0; x < winnersLength() - 1 ; x++ ) {
-            winners[x].transfer( toPay ); // Transfer ether to the winner.
+            winners[x].transfer( toPay );                                   // Transfer ether to the winner.
         }
         winners[ winnersLength() - 1 ].transfer( address( this ).balance ); // Transfer the rest of the ether.
     }

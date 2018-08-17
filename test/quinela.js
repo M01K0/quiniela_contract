@@ -42,7 +42,7 @@ contract('Quinela', function(accounts) {
   
   it( "setWinners test function", () => {
     var _winners = [ accounts[0] ]; // Address array of the winners
-    return quinelaInstance.setWinners( _winners, { from: accounts[9] } );
+    return quinelaInstance.setWinners( _winners, { from: accounts[0] } );
   });
   
   it( "vote test function ",() => { // 
