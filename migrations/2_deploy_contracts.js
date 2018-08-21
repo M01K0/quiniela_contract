@@ -1,5 +1,5 @@
 
-var Quiniela = artifacts.require("./quiniela.sol");
+var Quiniela = artifacts.require("./Quiniela.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(Quiniela);

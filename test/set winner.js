@@ -1,6 +1,6 @@
 var Quinela = artifacts.require("../contracts/quiniela");
 
-contract('Quinela', function(accounts) {
+contract('Set user revert', function(accounts) {
   var quinelaInstance;
   it("Creating the instance ( test )", () => {
 		return Quinela.deployed()
@@ -44,32 +44,7 @@ contract('Quinela', function(accounts) {
 
     var _winners = [ accounts[0] ]; // Address array of the winners
     var _money = [ web3._extend.utils.toWei( '1.8', "ether") ]
-    return quinelaInstance.setWinners( _winners, _money, { from: accounts[0] } );
-  });
-  
-  it( "vote test function ",() => { // 
-    var _vote = true;
-    return quinelaInstance.vote( _vote, { from: accounts[0] } )
-      .then( () => {
-        return quinelaInstance.vote( _vote, { from: accounts[1] } );
-      })
-      .then( () => {
-        return quinelaInstance.vote( _vote, { from: accounts[2] } );
-      })
-      .then( () => {
-        return quinelaInstance.vote( _vote, { from: accounts[3] } );
-      })
-      .then( () => {
-        return quinelaInstance.vote( _vote, { from: accounts[4] } );
-      });
-  });
-  
-  it( "playersLength test function" , () => {
-    return quinelaInstance.playersLength.call()
-    .then( length => {
-    	console.log( "Players: " + length.toNumber() ); // Numbers of players.
-    	//assert.equal( length.toNumber(), expected, '');
-    });
+    return quinelaInstance.setWinners( _winners, _money, { from: accounts[1] } );// accounts[1] is not the admin.
   });
 
 });

@@ -1,6 +1,6 @@
 var Quinela = artifacts.require("../contracts/quiniela");
 
-contract('Quinela', function(accounts) {
+contract('Return money', function(accounts) {
   var quinelaInstance;
   it("Creating the instance ( test )", () => {
 		return Quinela.deployed()
@@ -12,7 +12,7 @@ contract('Quinela', function(accounts) {
     // Function send.
     var _name = "nameTest"; // Name for test.
     var _password = "#crypto_Polla2018"; // Password of the footbal pool.
-    return quinelaInstance.addUser( 1, 2, 3, _name, _password, { from: accounts[0], value: web3._extend.utils.toWei( '0.2', "ether") } )
+    return quinelaInstance.addUser( 1, 2, 3, _name, _password, { from: accounts[9], value: web3._extend.utils.toWei( '0.2', "ether") } )
       .then( () => {
         return quinelaInstance.addUser( 4, 5, 6, _name, _password, { from: accounts[1], value: web3._extend.utils.toWei( '0.2', "ether") } );
       })
@@ -47,8 +47,8 @@ contract('Quinela', function(accounts) {
     return quinelaInstance.setWinners( _winners, _money, { from: accounts[0] } );
   });
   
-  it( "vote test function ",() => { // 
-    var _vote = true;
+  it( "vote test function but send false.",() => { // 
+    var _vote = false;
     return quinelaInstance.vote( _vote, { from: accounts[0] } )
       .then( () => {
         return quinelaInstance.vote( _vote, { from: accounts[1] } );
