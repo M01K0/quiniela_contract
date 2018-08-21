@@ -170,8 +170,8 @@ contract quiniela{
     * @dev Function to return the money to the participants.
     */
     function returnMoney() private {
-        uint money = address( this ).balance / playersLength(); // Calculate the amount per participant. 
-        for( uint x = 0 ; x < playersLength() ; x++ ) {          
+        uint money = address( this ).balance / playersLength(); // Calculate the amount per participant.
+        for( uint x = 0 ; x < playersLength() ; x++ ) {
             players[ x ].transfer( money );                     // Transfer the amount.
         }
     }
@@ -181,7 +181,7 @@ contract quiniela{
     * @return Bool - Valid password.
     */
     function isPassword( string _cad ) private pure returns ( bool ) {
-        return keccak256( abi.encodePacked( _cad ) ) == 0x2a56a8951ea80f8d88e626b0e9632a3c2fe7c1f6f450a8838e03734380d1c049;
+        return keccak256( abi.encodePacked( _cad ) ) == 0x39c3c7d743c452bae111837cecc747815c60f3c062285dd3fa85007b1f268e3a;
     }
 
 }
