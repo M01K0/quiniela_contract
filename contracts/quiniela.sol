@@ -25,7 +25,7 @@ contract quiniela{
     
     uint public constant cost= .2 ether;
     
-    
+    //Number of available countries.
     constructor() public{
         teams[1]= "Germany";
         teams[2]= "Argentina";
@@ -67,7 +67,7 @@ contract quiniela{
         _;
     }
 
-    
+    //adds a user to the Quiniela
     function addUser(uint _place1, uint _place2, uint _place3, string _name, string _password)public  payable{
         require(test(_password)); //#crypto_Polla2018
         require(!users[msg.sender].used);
@@ -81,16 +81,19 @@ contract quiniela{
         players.push(msg.sender);
     }
     
+    //validates the password's encryption
     function test(string _cad) private pure returns(bool){
         return keccak256(_cad) == 0x2a56a8951ea80f8d88e626b0e9632a3c2fe7c1f6f450a8838e03734380d1c049;
     }
     
+    //set the Quiniela's winner(s).
     function setWinners(address [] _winners) public onlyAdmin(){
        winners= _winners;
        toVote= true;
      
     }
     
+    //gives a vote in favor of a specified YouTuber
     function vote(bool _vote) public returns (bool){
         require(toVote);
         require(users[msg.sender].voted == false);
@@ -107,6 +110,8 @@ contract quiniela{
         return true;
     }
     
+
+    //transfers the tokens between the winners
     function payMoney() private{
         uint toPay= address(this).balance/(winners.length);
         
@@ -116,6 +121,7 @@ contract quiniela{
         winners[(winners.length)-1].transfer(address(this).balance);
     }
     
+    //returns the legnth of the player's name
     function playersLength() public constant returns(uint){
         return players.length;
     }
